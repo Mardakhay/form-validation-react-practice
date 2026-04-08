@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import FormField from "./FormField";
 
 interface LoginData {
   email: string;
@@ -15,42 +16,42 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginData) => {
     await new Promise((r) => setTimeout(r, 1000));
-    console.log("Login:", data);
+    console.log("✅ Login:", data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Daxil ol</h2>
 
-      <input
-        type="email"
-        placeholder="Email"
-        {...register("email", {
-          required: "Email daxil edin",
-          pattern: {
-            value: /^\S+@\S+\.\S+$/,
-            message: "Düzgün email deyil",
-          },
-        })}
-      />
-      {errors.email && <span>{errors.email.message}</span>}
+      <FormField label="Email" error={errors.email?.message}>
+        <input
+          type="email"
+          {...register("email", {
+            required: "Email daxil edin",
+            pattern: {
+              value: /^\S+@\S+\.\S+$/,
+              message: "Düzgün email deyil",
+            },
+          })}
+        />
+      </FormField>
 
-      <input
-        type="password"
-        placeholder="Şifrə"
-        {...register("password", {
-          required: "Şifrə daxil edin",
-        })}
-      />
-      {errors.password && <span>{errors.password.message}</span>}
+      <FormField label="Şifrə" error={errors.password?.message}>
+        <input
+          type="password"
+          {...register("password", {
+            required: "Şifrə daxil edin",
+          })}
+        />
+      </FormField>
 
       <label>
         <input type="checkbox" {...register("rememberMe")} />
         Yadda saxla
       </label>
 
-      <button disabled={isSubmitting}>
-        {isSubmitting ? "..." : "Daxil ol"}
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Göndərilir..." : "Daxil ol"}
       </button>
     </form>
   );
